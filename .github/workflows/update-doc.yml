@@ -1,0 +1,32 @@
+name: Update Google Doc Resume PDF
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-pdf:
+    permissions:
+      contents: "read"
+      id-token: "write"
+    runs-on: alpine-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          create_credentials_file: "true"
+          export_environment_variables: "true"
+          workload_identity_provider: "projects/44849840222/locations/global/workloadIdentityPools/github/providers/my-repo"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+      - name: call google api
+        run: python scripts/update_resume_pdf.py
