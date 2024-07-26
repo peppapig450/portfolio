@@ -1770,6 +1770,11 @@ input, select, textarea {
 			width: 100%;
 		}
 
+		.image.fit:hover {
+			transform: scale(1.4);
+			transition: transform 0.2s ease-in-out;
+		}
+
 		.image.featured {
 			display: block;
 			width: 100%;
